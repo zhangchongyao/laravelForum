@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Str;
 
 function route_class()
 {
@@ -11,4 +12,16 @@ function category_nav_active($route)
         return "active";
     }
     return null;
+}
+
+/**
+ * 生成摘要存入数据库，在存入数据库之前执行
+ * @param $value
+ * @param int $length
+ * @return string
+ */
+function make_excerpt($value, $length = 200)
+{
+    $excerpt = trim(preg_replace('/\r\n|\r|\n+/', '', strip_tags($value)));
+    return Str::limit($excerpt, $length);
 }
