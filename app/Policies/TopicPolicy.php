@@ -7,14 +7,26 @@ use App\Models\Topic;
 
 class TopicPolicy extends Policy
 {
+    /**
+     * 创建权限
+     * @param User $user
+     * @param Topic $topic
+     * @return bool
+     */
     public function update(User $user, Topic $topic)
     {
-        // return $topic->user_id == $user->id;
-        return true;
+        //User 模型封装的方法
+        return $user->isAuthOf($topic);
     }
 
+    /**
+     * 删除权限
+     * @param User $user
+     * @param Topic $topic
+     * @return bool
+     */
     public function destroy(User $user, Topic $topic)
     {
-        return true;
+        return $user->isAuthOf($topic);
     }
 }
