@@ -8,6 +8,7 @@
 
     <title>@yield('title', 'Forum') - 2020美国大选</title>
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    @yield('styles')
 </head>
 
 <body>
@@ -27,6 +28,8 @@
 
     </div>
 
+    <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}"></script>
+    @yield('scripts')
 </body>
 </html>
