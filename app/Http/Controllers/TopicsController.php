@@ -25,6 +25,10 @@ class TopicsController extends Controller
 		return view('topics.index', compact('topics'));
 	}
 
+    /**显示帖子
+     * @param Topic $topic
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function show(Topic $topic)
     {
         return view('topics.show', compact('topic'));
@@ -72,6 +76,12 @@ class TopicsController extends Controller
 		return redirect()->route('topics.index')->with('message', 'Deleted successfully.');
 	}
 
+    /**
+     * 富文本编辑器上传图片
+     * @param Request $request
+     * @param ImageUploadHandler $uploader
+     * @return array
+     */
 	public function uploadImage(Request $request, ImageUploadHandler $uploader)
     {
         //初始化返回数据，默认是失败的

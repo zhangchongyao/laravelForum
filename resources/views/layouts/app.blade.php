@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'Forum') - 2020美国大选</title>
+    <meta name="description" content="@yield('description', '2020美国选')">
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     @yield('styles')
 </head>
