@@ -48,6 +48,15 @@ class User extends Authenticatable implements MustVerifyEmailContracts
     }
 
     /**
+     * 用户的回复
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
+
+    /**
      * 权限判断
      * @param $model
      * @return bool
