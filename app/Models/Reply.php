@@ -24,4 +24,15 @@ class Reply extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * 评论排序
+     * @param $query
+     * @return mixed
+     */
+    public function scopeRecent($query)
+    {
+        //按照创建时间排序
+        return $query->orderBy('created_at', 'desc');
+    }
 }

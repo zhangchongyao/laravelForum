@@ -35,7 +35,7 @@
                         <li class="nav-item"><a class="nav-link @if(request()->input('tab') === 'replies') active @endif " href="{{ route('users.show', [$user->id, 'tab' => 'replies']) }}">Ta 的回复</a></li>
                     </ul>
                     @if(request()->input('tab') === 'replies')
-                        @include('users._replies', ['replies' => $user->replies()->with('topic')->paginate(5)])
+                        @include('users._replies', ['replies' => $user->replies()->recent()->with('topic')->paginate(5)])
                     @else
                         @include('users._topics', ['topics' => $user->topics()->recent()->paginate(5)])
                     @endif
