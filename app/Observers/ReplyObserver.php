@@ -23,11 +23,18 @@ class ReplyObserver
 
     public function created(Reply $reply)
     {
-        $reply->topic->reply_count = $reply->topic->replies->count();
-        //$reply->topic->increment('reply_count', 1);
-        $reply->topic->save();
+//        $reply->topic->reply_count = $reply->topic->replies->count();
+//        //$reply->topic->increment('reply_count', 1);
+//        $reply->topic->save();
+        //模型方法
+        $reply->topic->updateReplyCount();
 
         //通知话题坐着有新的评论
         $reply->topic->user->notify(new TopicReplied($reply));
+    }
+
+    public function deleted(Reply $reply)
+    {
+        $reply->topic->updateReplyCount();
     }
 }

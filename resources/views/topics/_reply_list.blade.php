@@ -16,11 +16,17 @@
                     <span class="meta text-secondary" title="{{ $reply->created_at }}">{{ $reply->created_at->diffForHumans() }}</span>
 
                     {{-- 回复删除按钮 --}}
-                    <span class="meta float-right ">
-                        <a title="删除回复">
-                              <i class="icon-trash"></i><strong> - </strong>删除
-                        </a>
-                    </span>
+                    @can('destroy', $reply)
+                        <span class="meta float-right ">
+                            <form action="{{ route('replies.destroy', $reply->id) }}" onsubmit="return confirm('确定要删除此评论吗？');" method="POST">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                                <button type="submit" class="btn btn-primary btn-xs pull-left ">
+                                    <strong> - </strong>删除
+                                </button>
+                            </form>
+                        </span>
+                    @endcan
                 </div>
                 <div class="reply-content text-secondary">
                     {!! $reply->content !!}
