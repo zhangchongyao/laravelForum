@@ -6,10 +6,15 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContracts;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable implements MustVerifyEmailContracts
 {
-    use Notifiable,MustVerifyEmailTrait;
+    use MustVerifyEmailTrait;
+
+    use Notifiable {
+        notify as protected laravelNotify;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -64,5 +69,24 @@ class User extends Authenticatable implements MustVerifyEmailContracts
     public function isAuthOf($model)
     {
         return $this->id == $model->user_id;
+    }
+
+    /**
+     * 评论更新通知话题作者
+     * @param $instance
+     */
+    public function notify($instance)
+    {
+        //如果要通知的人是当前用户，就不必通知了
+        if($this->id == Auth::id()) {
+            return;
+        }
+
+        //只有数据库类型通知才需提醒，直接发送Email或者其他的都Pass
+        if(method_exists($instance, 'toDatabase')) {
+            $this->increment('notification_count');
+        }
+
+        $this->laravelNotify($instance);
     }
 }
