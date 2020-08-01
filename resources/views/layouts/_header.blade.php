@@ -45,6 +45,12 @@
                             {{ Auth::user()->name }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            @can('manage_contents')
+                                <a class="dropdown-item" href="{{ url(config('administrator.uri')) }}">
+                                    管理后台
+                                </a>
+                                <div class="dropdown-divider"></div>
+                            @endcan
                             <a class="dropdown-item" href="{{ route('users.show', Auth::id()) }}">
                                 个人中心
                             </a>
