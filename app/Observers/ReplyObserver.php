@@ -26,11 +26,14 @@ class ReplyObserver
 //        $reply->topic->reply_count = $reply->topic->replies->count();
 //        //$reply->topic->increment('reply_count', 1);
 //        $reply->topic->save();
-        //模型方法
-        $reply->topic->updateReplyCount();
+        //命令行运行迁移时不做这些操作
+        if(! app()->runningInConsole()) {
+            //模型方法
+            $reply->topic->updateReplyCount();
 
-        //通知话题坐着有新的评论
-        $reply->topic->user->notify(new TopicReplied($reply));
+            //通知话题坐着有新的评论
+            $reply->topic->user->notify(new TopicReplied($reply));
+        }
     }
 
     public function deleted(Reply $reply)
