@@ -19,7 +19,7 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     $date_time = null;
-    $password = md5('password');
+    $password = bcrypt('password');
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
