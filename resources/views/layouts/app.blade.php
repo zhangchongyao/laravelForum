@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Forum') - 2020美国大选</title>
-    <meta name="description" content="@yield('description', '2020美国选')">
+    <title>@yield('title', 'Forum') - {{  setting('site_name', '2020美国大选')}}</title>
+    <meta name="description" content="@yield('description', setting('seo_description', '2020美国选'))">
+    <meta name="keyword" content="@yield('keyword', setting('seo_keyword', 'Forum社区，论坛，2020美国大选'))">
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     @yield('styles')
 </head>
