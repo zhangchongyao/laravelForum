@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Link;
 use App\Models\Topic;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,14 +19,15 @@ class TopicsController extends Controller
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
-	public function index(Request $request, Topic $topic, User $user)
+	public function index(Request $request, Topic $topic, User $user, Link $link)
 	{
 		$topics = $topic->withOrder($request->order)
             ->with('user', 'category')  //预加载防止N+1问题
             ->paginate(10);
 		$active_users = $user->getActiveUsers();
+		$links = $link->getAllCached();
 		//dd($active_users);
-		return view('topics.index', compact('topics', 'active_users'));
+		return view('topics.index', compact('topics', 'active_users', 'links'));
 	}
 
     /**显示帖子
