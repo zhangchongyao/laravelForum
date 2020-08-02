@@ -18,7 +18,7 @@ trait ActiveUserHelper
     protected $topic_weight = 4; //话题权重
     protected $reply_weight = 1; //回复权重
     protected $pass_days = 7; //多少天内发表过内容
-    protected $user_number = 6; //取出来多少用户
+    protected $user_number = 10; //取出来多少用户
 
     //缓存相关配置
     protected $cache_key = 'forum_active_users';
@@ -80,7 +80,9 @@ trait ActiveUserHelper
         //从话题数据表里取出限定时间范围（$pass_days）内，有发表过话题的用户
         // 并同时取出用户此段时间内发布话题的数量
         $topic_users = Topic::query()->select(DB::raw('user_id, count(*) as topic_count'))
-                                    ->where('created_at', '>=', Carbon::now()->subDays($this->pass_days));
+                                    ->where('created_at', '>=', Carbon::now()->subDays($this->pass_days))
+                                    ->groupBy('user_id')
+                                    ->get();
         //根据话题数量计算得分
         foreach($topic_users as $value) {
             $this->users[$value->user_id]['score'] = $value->topic_count * $this->topic_weight;
@@ -97,7 +99,7 @@ trait ActiveUserHelper
             ->get();
         //根据回复数量计算得分
         foreach($topic_users as $value) {
-            $reply_score = $value->topic_count * $this->topic_weight;
+            $reply_score = $value->topic_count * $this->reply_weight;
             if (isset($this->users[$value->user_id])) {
                 $this->users[$value->user_id]['score'] += $reply_score;
             } else {
