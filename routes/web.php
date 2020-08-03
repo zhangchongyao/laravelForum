@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'TopicsController@index')->name('root');
+//短信验证码测试
+Route::get('/test', 'PagesController@sms')->name('sms');
 
 // 用户身份验证相关的路由
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');

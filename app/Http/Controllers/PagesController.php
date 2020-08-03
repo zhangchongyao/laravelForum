@@ -25,4 +25,20 @@ class PagesController extends Controller
         //否则使用视图
         return view('pages.permission_denied');
     }
+
+    public function sms()
+    {
+        $sms = app('easysms');
+        try {
+            $sms->send(15754307623, [
+                'template' => 'SMS_192570772',
+                'data' => [
+                    'code' => 1234
+                ],
+            ]);
+        } catch (\Overtrue\EasySms\Exceptions\NoGatewayAvailableException $exception) {
+            $message = $exception->getException('aliyun')->getMessage();
+            dd($message);
+        }
+    }
 }
