@@ -26,6 +26,9 @@ class PagesController extends Controller
         return view('pages.permission_denied');
     }
 
+    /**
+     * 短信调试
+     */
     public function sms()
     {
         $sms = app('easysms');
