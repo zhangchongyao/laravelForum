@@ -37,4 +37,18 @@ class TopicsController extends Controller
         $topic->update($request->all());
         return new TopicResource($topic);
     }
+
+    /**
+     * 删除某个（id）话题资源
+     * @param Topic $topic
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function destroy(Topic $topic)
+    {
+        $this->authorize('destroy', $topic);
+        $topic->delete();
+
+        return response(null, 204);
+    }
 }
