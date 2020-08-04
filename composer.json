@@ -25,6 +25,7 @@
         "overtrue/pinyin": "^4.0",
         "socialiteproviders/weixin": "^4.0",
         "spatie/laravel-permission": "^3.13",
+        "spatie/laravel-query-builder": "^2.8",
         "summerblue/administrator": "^7.0",
         "tymon/jwt-auth": "^1.0",
         "viacreative/sudo-su": "^1.1"
