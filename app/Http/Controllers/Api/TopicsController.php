@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Queries\TopicQuery;
 use App\Http\Requests\Api\TopicRequest;
 use App\Http\Resources\TopicResource;
 use App\Models\Topic;
@@ -61,16 +62,9 @@ class TopicsController extends Controller
      * @param Topic $topic
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(Request $request, Topic $topic)
+    public function index(Request $request, TopicQuery $query)
     {
-        $topics = QueryBuilder::for(Topic::class)
-            ->allowedIncludes('user', 'category')
-            ->allowedFilters([
-                'title',
-                AllowedFilter::exact('category_id'),
-                AllowedFilter::scope('withOrder')->default('recentReplied'),
-            ])
-            ->paginate();
+        $topics = $query->paginate();
 
         return TopicResource::collection($topics);
     }
@@ -81,23 +75,16 @@ class TopicsController extends Controller
      * @param User $user
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function userIndex(Request $request, User $user)
+    public function userIndex(Request $request, User $user, TopicQuery $query)
     {
-        $query = $user->topics()->getQuery();
-        $topics = QueryBuilder::for($query)
-            ->allowedIncludes('user', 'category')
-            ->allowedFilters([
-                'title',
-                AllowedFilter::exact('category_id'),
-                AllowedFilter::scope('withOrder')->default('recentReplied'),
-            ])
-            ->paginate();
+        $topics = $query->where('user_id', $user->id)->paginate();
 
         return TopicResource::collection($topics);
     }
 
-    public function show(Topic $topic)
+    public function show($topicid, TopicQuery $query)
     {
+        $topic = $query->findOrFail($topicid);
         return new TopicResource($topic);
     }
 }
