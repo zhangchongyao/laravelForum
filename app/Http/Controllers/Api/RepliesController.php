@@ -10,6 +10,13 @@ use Illuminate\Http\Request;
 
 class RepliesController extends Controller
 {
+    /**
+     * 发布回复资源
+     * @param ReplyRequest $request
+     * @param Topic $topic
+     * @param Reply $reply
+     * @return ReplyResource
+     */
     public function store(ReplyRequest $request, Topic $topic, Reply $reply)
     {
         //dd($request);
@@ -19,5 +26,23 @@ class RepliesController extends Controller
         $reply->save();
 
         return new ReplyResource($reply);
+    }
+
+    /**
+     * 删除回复资源
+     * @param Topic $topic
+     * @param Reply $reply
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function destroy(Topic $topic, Reply $reply)
+    {
+        if($reply->topic_id != $topic->id) {
+            abort(404);
+        }
+        $this->authorize('destroy', $reply);
+        $reply->delete();
+
+        return response(null, 204);
     }
 }
