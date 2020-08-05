@@ -71,4 +71,15 @@ class UsersController extends Controller
         $user->update($attributs);
         return (new UserResource($user))->showSensitiveFields();
     }
+
+    /**
+     * 获取最近7天的活跃用户
+     * @param User $user
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function activeIndex(User $user)
+    {
+        UserResource::wrap('data');
+        return UserResource::collection($user->getActiveUsers());
+    }
 }
