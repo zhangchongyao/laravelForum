@@ -70,7 +70,10 @@ class AuthorizationsController extends Controller
         $credentials['password'] = $request->password;
 
         if(!$token = Auth::guard('api')->attempt($credentials)) {
-            throw new AuthenticationException('用户名或密码错误');
+            //本地化
+            //用户名或密码错误
+            //These credentials do not match our records.
+            throw new AuthenticationException(trans('auth.failed'));
         }
 
         return $this->responseWithToken($token)->setStatusCode(201);
